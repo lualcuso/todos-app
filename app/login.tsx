@@ -1,4 +1,5 @@
 import {
+  Alert,
   View,
   Text,
   TextInput,
@@ -6,8 +7,28 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+
+import { setItem } from "@/utils/asyncStorage";
+
+import { login } from "@/api/auth";
+import { useState } from "react";
+
 export default function Login() {
+  const [email, setEmail] = useState("luis.cubillo.soto@gmail.com");
+  const [password, setPassword] = useState("beat");
+
+  const onLogin = async () => {
+    const { data } = await login(email, password);
+    const { user } = data;
+    if (user) {
+      await setItem("token", user.token);
+      router.replace("/");
+    } else {
+      Alert.alert("Error", "Error login");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -16,16 +37,23 @@ export default function Login() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <TextInput
+              value={email}
               keyboardType="email-address"
               placeholder="you@email.com"
+              onChangeText={setEmail}
             />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
-            <TextInput textContentType="password" placeholder="Password" />
+            <TextInput
+              value={password}
+              textContentType="password"
+              placeholder="Password"
+              onChangeText={setPassword}
+            />
           </View>
 
-          <Button title="Login" />
+          <Button title="Login" onPress={onLogin} />
           <Link style={styles.link} href="/forgot-password">
             Forgot your password?
           </Link>
