@@ -15,8 +15,8 @@ import { login } from "@/api/auth";
 import { useState } from "react";
 
 export default function Login() {
-  const [email, setEmail] = useState("luis.cubillo.soto@gmail.com");
-  const [password, setPassword] = useState("060292");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onLogin = async () => {
     const { data } = await login(email, password);
