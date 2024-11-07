@@ -5,6 +5,9 @@ export const getItem = async (name: string) => {
 };
 
 export const setItem = async (name: string, value: string) => {
-  const jsonValue = JSON.stringify(value);
-  await AsyncStorage.setItem(name, jsonValue);
+  await AsyncStorage.setItem(name, JSON.stringify(value));
+};
+
+export const deleteItem = async (name: string) => {
+  await AsyncStorage.removeItem(name);
 };
